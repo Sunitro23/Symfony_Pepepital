@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes rendez-vous{% endblock %}
+
+{% block body %}
+    {% if rdvs is defined %}
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Date</th>
+                    <th scope="col">Medecin</th>
+                    <th scope="col">Durée</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Modifier/annuler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rdv in rdvs %}
+                    <tr>
+                        <th scope="row">{{rdv.date | date("m/d/Y")}}</th>
+                        <td>{{rdv.medecin.nom}}</td>
+                        <td>{{rdv.duree}}mins</td>
+                        <td>{{rdv.statut.libelle}}</td>
+                        <td><a href="/patient/modif-rdv/{{rdv.id}}"><button>Modifier le rendez-vous</button></a>
+                        <a href="/patient/annuler-rdv/{{rdv.id}}"><button>Annuler le rendez-vous</button></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

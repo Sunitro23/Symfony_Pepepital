@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{%block head %}{% endblock %}
+{% block body %}
+
+	<div class="bg-light rounded text-dark d-flex flex-column justify-content-center m-5 p-2">
+		<br>
+		<table>
+			<tr>
+				<th>
+					ID du rdv:
+				</th>
+				<th>
+					Nom du patient
+				</th>
+			</tr>
+			<tr>
+				<td>
+					{{unRDV.ID}}
+				</td>
+				<td>
+					{{unRDV.Patient.nom}}
+				</td>
+			</tr>
+		</table>
+        {{form_start(form)}}{{form_widget(form)}}{{form_end(form)}}
+        </div>
+
+	{% endblock %}

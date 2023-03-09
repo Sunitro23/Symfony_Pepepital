@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Quel compte voulez vous créer ?</h1>
+
+<a href="{{ path('app_register_create_patient') }}"><button type="button" class"btn btn-primary">Enregister un patient</button></a>
+<a href="{{ path('app_register_create_medecin') }}"><button type="button" class"btn btn-primary">Enregister un medecin</button></a>
+<a href="{{ path('app_register_create_assistant') }}"><button type="button" class"btn btn-primary">Enregister un assistant</button></a>
+{% endblock %}

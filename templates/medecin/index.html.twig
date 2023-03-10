@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes rendez-vous{% endblock %}
+
+{% block body %}
+
+<div class="container bg-white">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Durée</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rdv in rdvs %}
+                <tr>
+                    <td>Le {{rdv.date|date('d/m/Y \à H\\hi')}}</td>
+                    <td>{{rdv.patient.user.login}}</td>
+                    <td>{{rdv.statut.libelle}}</td>
+                    <td>
+                        {% if rdv.statut.id==2 %}
+                            Le rendez-vous est encore en attente
+                        {% else %}
+                            {{rdv.duree}}
+                        {% endif %}
+                    </td>
+                    <td>
+                    {% if rdv.statut.id==2 %}
+                        <a href="/valider/{{rdv.id}}"><button class="btn btn-success"><i class="fa fa-check"></i> Valider le rdv</button></a>
+                    {% endif %}
+                        <a href="/rdv_{{rdv.id}}"><button class="btn btn-primary"><i class="fa fa-pencil"></i> Modifier le rdv</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

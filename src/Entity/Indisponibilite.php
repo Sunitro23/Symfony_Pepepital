@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\IndisponibiliteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: IndisponibiliteRepository::class)]
+#[ApiResource]
 class Indisponibilite
 {
     #[ORM\Id]
@@ -14,29 +16,40 @@ class Indisponibilite
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $debut = null;
 
-    #[ORM\Column(length: 75)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fin = null;
+
+    #[ORM\Column(length: 50)]
     private ?string $libelle = null;
-
-    #[ORM\ManyToOne(inversedBy: 'indisponibilites')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Medecin $medecin = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDebut(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->debut;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDebut(\DateTimeInterface $debut): self
     {
-        $this->date = $date;
+        $this->debut = $debut;
+
+        return $this;
+    }
+
+    public function getFin(): ?\DateTimeInterface
+    {
+        return $this->fin;
+    }
+
+    public function setFin(\DateTimeInterface $fin): self
+    {
+        $this->fin = $fin;
 
         return $this;
     }
@@ -49,18 +62,6 @@ class Indisponibilite
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    public function getMedecin(): ?Medecin
-    {
-        return $this->medecin;
-    }
-
-    public function setMedecin(?Medecin $medecin): self
-    {
-        $this->medecin = $medecin;
 
         return $this;
     }

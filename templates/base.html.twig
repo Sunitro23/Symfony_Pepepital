@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
-	</head>
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div class="container-fluid">
-				<ul class="navbar-nav">
-					<div class="d-flex justify-content-stretch">
-						<a class="navbar-brand" href="https://www.youtube.com/watch?v=oHg5SJYRHA0">
-							<img src="https://emoji.gg/assets/emoji/3256_coronaHands.png" alt="PepeLogo" width="40">
-						</a>
-						{% if is_granted('ROLE_PATIENT') %}
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Mon portfolio{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+            <link rel="stylesheet" href="css.css"/>
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+            <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+            {% endblock %}
+    </head>
+    <body class="bg-secondary">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+            <a class="navbar-brand" href="{{path('index')}}">Pepepital</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                {% if app.user %}
+                        {% if app.user.type.id==1 %}
                         <li class="nav-item">
-							<a class="nav-link" href="{{ path('app_patient') }}">Mon compte</a>
-						</li>
-						{% endif %}
-						{% if is_granted('ROLE_ASSISTANT') %}
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_rdv') }}">Rendez-vous</a>
-						</li>
-						{% endif %}
-						{% if is_granted('ROLE_MEDECIN') %}
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">Créer un compte</a>
-						</li>
-						{% endif %}
-						{% if app.user is null %}
+                            <a class="nav-link" href="{{path('prendre_rdv')}}">Prendre rdv</a>
+                        </li>
                         <li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
-						</li>
-						{% else %}
-                        <li class="nav-item">
-							<a class="nav-link">Connecté en tant que {{app.user.username}}</a>
-						</li>
-						<li>
-							<a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-						{% endif %}
-						</li>
-					</div>
-				</ul>
-			</div>
-		</nav>
-	</header>
-	<body>
-		{% block body %}{% endblock %}
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
-	</body>
+                            <a class="nav-link" href="{{path('mes_rdv')}}">Mes rdv</a>
+                        </li>
+                        {% else %}
+                            {% if app.user.type.id==2 %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('rdv_medecin')}}">Mes rdv</a>
+                            </li>
+                            {% else %}
+                                {% if app.user.type.id==3 %}
+                                
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                {% endif %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Connecté en tant que {{app.user.login}}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{path('logout')}}">Déconnexion</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Connexion</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        {% block body %}{% endblock %}
+    </body>
 </html>

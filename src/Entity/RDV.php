@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RDVRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RDVRepository::class)]
+#[ApiResource]
 class RDV
 {
     #[ORM\Id]
@@ -14,54 +16,27 @@ class RDV
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $heure = null;
-
     #[ORM\Column]
     private ?int $duree = null;
 
-    #[ORM\ManyToOne(inversedBy: 'RDVs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Medecin $medecin = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'RDVs')]
+    #[ORM\ManyToOne(inversedBy: 'rdvs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Patient $patient = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rdvs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Statut $statut = null;
 
-    #[ORM\ManyToOne(inversedBy: 'RDVs')]
+    #[ORM\ManyToOne(inversedBy: 'rdvs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Patient $patient = null;
+    private ?Medecin $medecin = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getHeure(): ?\DateTimeInterface
-    {
-        return $this->heure;
-    }
-
-    public function setHeure(\DateTimeInterface $heure): self
-    {
-        $this->heure = $heure;
-
-        return $this;
     }
 
     public function getDuree(): ?int
@@ -76,14 +51,26 @@ class RDV
         return $this;
     }
 
-    public function getMedecin(): ?Medecin
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->medecin;
+        return $this->date;
     }
 
-    public function setMedecin(?Medecin $medecin): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->medecin = $medecin;
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
 
         return $this;
     }
@@ -100,14 +87,14 @@ class RDV
         return $this;
     }
 
-    public function getPatient(): ?Patient
+    public function getMedecin(): ?Medecin
     {
-        return $this->patient;
+        return $this->medecin;
     }
 
-    public function setPatient(?Patient $patient): self
+    public function setMedecin(?Medecin $medecin): self
     {
-        $this->patient = $patient;
+        $this->medecin = $medecin;
 
         return $this;
     }

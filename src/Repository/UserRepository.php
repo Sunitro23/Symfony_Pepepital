@@ -42,6 +42,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+    public function getCorresp(User $user)
+    {
+        $id = $user->getId();
+        $type = $user->getType()->getId();
+        $em = $this->getEntityManager();
+        $corresp = null;
+        if ($type == 1) {
+            $query = $em->createQueryBuilder()
+                ->select('p')
+                ->from('App\Entity\Patient', 'p')
+                ->where('p.user=:id')
+                ->setParameter('id', $id);
+            $corresp = $query;
+        } elseif ($type == 2) {
+            $query = $em->createQueryBuilder()
+                ->select('m')
+                ->from('App\Entity\Medecin', 'm')
+                ->where('m.user=:id')
+                ->setParameter('id', $id);
+            $corresp = $query;
+        } elseif ($type == 3) {
+            $query = $em->createQueryBuilder()
+                ->select('a')
+                ->from('App\Entity\Assistant', 'a')
+                ->where('a.user=:id')
+                ->setParameter('id', $id);
+            $corresp = $query;
+        }
+        return $corresp->getQuery()->getOneOrNullResult();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -18,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private ?string $login = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -29,31 +29,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 25)]
-    private ?string $username = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Medecin $medecin = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Patient $patient = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Assistant $assistant = null;
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Type $type = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getLogin(): ?string
     {
-        return $this->email;
+        return $this->login;
     }
 
-    public function setEmail(string $email): self
+    public function setLogin(string $login): self
     {
-        $this->email = $email;
+        $this->login = $login;
 
         return $this;
     }
@@ -65,7 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->login;
     }
 
     /**
@@ -111,50 +103,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
+    public function getType(): ?Type
     {
-        return $this->username;
+        return $this->type;
     }
 
-    public function setUsername(string $username): self
+    public function setType(?Type $type): self
     {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getMedecin(): ?Medecin
-    {
-        return $this->medecin;
-    }
-
-    public function setMedecin(?Medecin $medecin): self
-    {
-        $this->medecin = $medecin;
-
-        return $this;
-    }
-
-    public function getPatient(): ?Patient
-    {
-        return $this->patient;
-    }
-
-    public function setPatient(?Patient $patient): self
-    {
-        $this->patient = $patient;
-
-        return $this;
-    }
-
-    public function getAssistant(): ?Assistant
-    {
-        return $this->assistant;
-    }
-
-    public function setAssistant(?Assistant $assistant): self
-    {
-        $this->assistant = $assistant;
+        $this->type = $type;
 
         return $this;
     }

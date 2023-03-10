@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AssistantRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: AssistantRepository::class)]
+#[ApiResource]
 class Assistant
 {
     #[ORM\Id]
@@ -15,27 +15,16 @@ class Assistant
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $login = null;
-
     #[ORM\OneToOne(mappedBy: 'assistant', cascade: ['persist', 'remove'])]
     private ?Medecin $medecin = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    public function setLogin(string $login): self
-    {
-        $this->login = $login;
-
-        return $this;
     }
 
     public function getMedecin(): ?Medecin
@@ -43,14 +32,31 @@ class Assistant
         return $this->medecin;
     }
 
-    public function setMedecin(Medecin $medecin): self
+    public function setMedecin(?Medecin $medecin): self
     {
+        // unset the owning side of the relation if necessary
+        if ($medecin === null && $this->medecin !== null) {
+            $this->medecin->setAssistant(null);
+        }
+
         // set the owning side of the relation if necessary
-        if ($medecin->getAssistant() !== $this) {
+        if ($medecin !== null && $medecin->getAssistant() !== $this) {
             $medecin->setAssistant($this);
         }
 
         $this->medecin = $medecin;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

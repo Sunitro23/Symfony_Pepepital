@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MedecinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MedecinRepository::class)]
+#[ApiResource]
 class Medecin
 {
     #[ORM\Id]
@@ -15,23 +17,19 @@ class Medecin
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $nom = null;
-
     #[ORM\OneToOne(inversedBy: 'medecin', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Assistant $assistant = null;
 
-    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: Indisponibilite::class)]
-    private Collection $indisponibilites;
+    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: RDV::class, orphanRemoval: true)]
+    private Collection $rdvs;
 
-    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: RDV::class)]
-    private Collection $RDVs;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
-        $this->indisponibilites = new ArrayCollection();
-        $this->RDVs = new ArrayCollection();
+        $this->rdvs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -39,24 +37,12 @@ class Medecin
         return $this->id;
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
     public function getAssistant(): ?Assistant
     {
         return $this->assistant;
     }
 
-    public function setAssistant(Assistant $assistant): self
+    public function setAssistant(?Assistant $assistant): self
     {
         $this->assistant = $assistant;
 
@@ -64,61 +50,43 @@ class Medecin
     }
 
     /**
-     * @return Collection<int, Indisponibilite>
-     */
-    public function getIndisponibilites(): Collection
-    {
-        return $this->indisponibilites;
-    }
-
-    public function addIndisponibilite(Indisponibilite $indisponibilite): self
-    {
-        if (!$this->indisponibilites->contains($indisponibilite)) {
-            $this->indisponibilites->add($indisponibilite);
-            $indisponibilite->setMedecin($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIndisponibilite(Indisponibilite $indisponibilite): self
-    {
-        if ($this->indisponibilites->removeElement($indisponibilite)) {
-            // set the owning side to null (unless already changed)
-            if ($indisponibilite->getMedecin() === $this) {
-                $indisponibilite->setMedecin(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, RDV>
      */
-    public function getRDVs(): Collection
+    public function getRdvs(): Collection
     {
-        return $this->RDVs;
+        return $this->rdvs;
     }
 
-    public function addRDV(RDV $rDV): self
+    public function addRdv(RDV $rdv): self
     {
-        if (!$this->RDVs->contains($rDV)) {
-            $this->RDVs->add($rDV);
-            $rDV->setMedecin($this);
+        if (!$this->rdvs->contains($rdv)) {
+            $this->rdvs->add($rdv);
+            $rdv->setMedecin($this);
         }
 
         return $this;
     }
 
-    public function removeRDV(RDV $rDV): self
+    public function removeRdv(RDV $rdv): self
     {
-        if ($this->RDVs->removeElement($rDV)) {
+        if ($this->rdvs->removeElement($rdv)) {
             // set the owning side to null (unless already changed)
-            if ($rDV->getMedecin() === $this) {
-                $rDV->setMedecin(null);
+            if ($rdv->getMedecin() === $this) {
+                $rdv->setMedecin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

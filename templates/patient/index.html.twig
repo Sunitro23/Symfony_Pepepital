@@ -3,13 +3,17 @@
 {% block title %}Hello PatientController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-<div class="example-wrapper">
-    <h1>Bienvenue {{ patient.nom }}</h1><br>
-    <a href="/patient/rdv"><button>Mes rendez-vous</button><br><br>
-    <a href="/patient/prendre-rdv"><button>Prendre rendez-vous</button></a>
+
+<div class="container bg-white">
+    {{form_start(form)}}
+        <div class="form-group">
+            {{form_row(form.date)}}
+        </div>
+        <div class="form-group">
+            {{form_row(form.medecin)}}
+        </div>
+        <button type="submit" class="btn btn-primary">Demander le rendez-vous</button>
+    {{form_end(form)}}
 </div>
+
 {% endblock %}

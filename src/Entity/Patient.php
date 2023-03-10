@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
+#[ApiResource]
 class Patient
 {
     #[ORM\Id]
@@ -15,38 +17,27 @@ class Patient
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 40)]
     private ?string $mail = null;
 
-    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: RDV::class)]
-    private Collection $RDVs;
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: RDV::class, orphanRemoval: true)]
+    private Collection $rdvs;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
-        $this->RDVs = new ArrayCollection();
+        $this->rdvs = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
     }
 
     public function getAdresse(): ?string
@@ -76,28 +67,41 @@ class Patient
     /**
      * @return Collection<int, RDV>
      */
-    public function getRDVs(): Collection
+    public function getRdvs(): Collection
     {
-        return $this->RDVs;
+        return $this->rdvs;
     }
 
-    public function addRDV(RDV $rDV): self
+    public function addRdv(RDV $rdv): self
     {
-        if (!$this->RDVs->contains($rDV)) {
-            $this->RDVs->add($rDV);
-            $rDV->setPatient($this);
+        if (!$this->rdvs->contains($rdv)) {
+            $this->rdvs->add($rdv);
+            $rdv->setPatient($this);
         }
 
         return $this;
     }
 
-    public function removeRDV(RDV $rDV): self
+    public function removeRdv(RDV $rdv): self
     {
-        if ($this->RDVs->removeElement($rDV)) {
-            if ($rDV->getPatient() === $this) {
-                $rDV->setPatient(null);
+        if ($this->rdvs->removeElement($rdv)) {
+            // set the owning side to null (unless already changed)
+            if ($rdv->getPatient() === $this) {
+                $rdv->setPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -29,6 +29,9 @@ security:
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/patient, roles: ROLE_PATIENT}
+    - { path: ^/medecin, roles: ROLE_MEDECIN}
+    - { path: ^/assistant, roles: ROLE_ASSISTANT}
 
 when@test:
   security:

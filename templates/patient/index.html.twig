@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PatientController!{% endblock %}
+{% block title %}Demander un rendez-vous{% endblock %}
 
 {% block body %}
 
-<div class="container bg-white">
+<div class="container rounded bg-white">
     {{form_start(form)}}
         <div class="form-group">
-            {{form_row(form.date)}}
+            <label>Date :</label>{{form_widget(form.date)}}
         </div>
         <div class="form-group">
-            {{form_row(form.medecin)}}
+            <label>Médecin :</label>{{form_widget(form.medecin)}}
         </div>
-        <button type="submit" class="btn btn-primary">Demander le rendez-vous</button>
+        <button type="submit" class="btn btn-primary mb-1">Demander le rendez-vous</button>
     {{form_end(form)}}
 </div>
 

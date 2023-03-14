@@ -40,9 +40,14 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{path('rdv_medecin')}}">Mes rdv</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{path('indispo')}}">Mes indisponibilités</a>
+                            </li>
                             {% else %}
                                 {% if app.user.type.id==3 %}
-                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{path('rdv_assistant')}}">Rendez-vous</a>
+                                    </li>
                                 {% endif %}
                             {% endif %}
                         {% endif %}

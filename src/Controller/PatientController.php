@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PatientController extends AbstractController
 {
-    #[Route('/prendre-rdv', name: 'prendre_rdv')]
+    #[Route('/patient/prendre-rdv', name: 'prendre_rdv')]
     public function index(Request $request, UserRepository $userRepository, StatutRepository $statutRepository, EntityManagerInterface $em): Response
     {
         $rdv = new RDV();
@@ -35,7 +35,7 @@ class PatientController extends AbstractController
         ]);
     }
 
-    #[Route('/mes-rdv', name: 'mes_rdv')]
+    #[Route('/patient/mes-rdv', name: 'mes_rdv')]
     public function rdvs(UserRepository $userRepository): Response
     {
         return $this->render('patient/mes_rdv.html.twig', [
@@ -43,7 +43,7 @@ class PatientController extends AbstractController
         ]);
     }
 
-    #[Route('/rdv{id}')]
+    #[Route('/patient/rdv{id}')]
     public function rdv($id, RDVRepository $rr, EntityManagerInterface $em, Request $request): Response
     {
         $rdv = $rr->find($id);

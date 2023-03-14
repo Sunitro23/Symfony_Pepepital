@@ -16,6 +16,7 @@ class Assistant
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'assistant', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Medecin $medecin = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

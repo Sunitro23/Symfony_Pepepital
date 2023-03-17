@@ -22,14 +22,6 @@ class Type
     #[ORM\Column(length: 20)]
     private ?string $libelle = null;
 
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: User::class, orphanRemoval: true)]
-    private Collection $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -43,36 +35,6 @@ class Type
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setType($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getType() === $this) {
-                $user->setType(null);
-            }
-        }
 
         return $this;
     }

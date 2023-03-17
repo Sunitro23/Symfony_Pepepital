@@ -25,6 +25,10 @@ class Indisponibilite
     #[ORM\Column(length: 50)]
     private ?string $libelle = null;
 
+    #[ORM\ManyToOne(inversedBy: 'indisponibilites')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Medecin $medecin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +66,18 @@ class Indisponibilite
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getMedecin(): ?Medecin
+    {
+        return $this->medecin;
+    }
+
+    public function setMedecin(?Medecin $medecin): self
+    {
+        $this->medecin = $medecin;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pepepital - Mes rendez-vous{% endblock %}
+{% block title %}Pepepital - Rendez-vous{% endblock %}
 
 {% block body %}
 
@@ -29,12 +29,12 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.statut.id==2 %}
-                            <a href="/valider/{{rdv.id}}"><button class="btn btn-success"><i class="fa fa-check"></i> Valider le rdv</button></a>
-                        {% endif %}
-                        {% if rdv.statut.id!=1 %}
-                            <a href="/medecin/rdv{{rdv.id}}"><button class="btn btn-primary"><i class="fa fa-pencil"></i> Modifier le rdv</button></a>
-                        {% endif %}
+                    {% if rdv.statut.id==2 %}
+                        <a href="/valider/{{rdv.id}}"><button class="btn btn-success"><i class="fa fa-check"></i> Valider le rdv</button></a>
+                    {% endif %}
+                    {% if rdv.statut.id!=1 %}
+                        <a href="/assistant/rdv{{rdv.id}}"><button class="btn btn-primary"><i class="fa fa-pencil"></i> Modifier le rdv</button></a>
+                    {% endif %}
                     </td>
                 </tr>
             {% endfor %}

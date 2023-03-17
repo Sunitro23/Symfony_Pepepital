@@ -7,6 +7,8 @@ use App\Repository\MedecinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PHPUnit\TextUI\XmlConfiguration\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: MedecinRepository::class)]
 #[ApiResource]
@@ -18,13 +20,19 @@ class Medecin
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'medecin', cascade: ['persist', 'remove'])]
+    #[MaxDepth(1)]
+    #[Groups(["exclude_circular_reference"])]
     private ?Assistant $assistant = null;
 
     #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: RDV::class, orphanRemoval: true)]
+    #[MaxDepth(1)]
+    #[Groups(["exclude_circular_reference"])]
     private Collection $rdvs;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[MaxDepth(1)]
+    #[Groups(["exclude_circular_reference"])]
     private ?User $user = null;
 
     public function __construct()

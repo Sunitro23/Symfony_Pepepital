@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AssistantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use PHPUnit\TextUI\XmlConfiguration\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: AssistantRepository::class)]
 #[ApiResource]
@@ -21,6 +23,8 @@ class Assistant
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[MaxDepth(1)]
+    #[Groups(["exclude_circular_reference"])]
     private ?User $user = null;
 
     public function getId(): ?int

@@ -29,6 +29,9 @@ class Medecin
     #[Groups(["exclude_circular_reference"])]
     private Collection $rdvs;
 
+    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: Indisponibilite::class, orphanRemoval: true)]
+    private Collection $indisponibilites;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[MaxDepth(1)]
@@ -38,6 +41,7 @@ class Medecin
     public function __construct()
     {
         $this->rdvs = new ArrayCollection();
+        $this->indisponibilites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +99,35 @@ class Medecin
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Indisponibilite>
+     */
+    public function getIndisponibilites(): Collection
+    {
+        return $this->indisponibilites;
+    }
+
+    public function addIndisponibilite(Indisponibilite $indisponibilite): self
+    {
+        if (!$this->indisponibilites->contains($indisponibilite)) {
+            $this->indisponibilites->add($indisponibilite);
+        }
+
+        return $this;
+    }
+
+    public function removeIndisponibilite(Indisponibilite $indisponibilite): self
+    {
+        if ($this->indisponibilites->removeElement($indisponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($indisponibilite->getMedecin() === $this) {
+                $indisponibilite->setMedecin(null);
+            }
+        }
 
         return $this;
     }

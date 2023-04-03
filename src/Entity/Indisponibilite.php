@@ -75,7 +75,7 @@ class Indisponibilite
         return $this->medecin;
     }
 
-    public function setMedecin(?Medecin $medecin): self
+    public function setMedecin(Medecin $medecin): self
     {
         $this->medecin = $medecin;
 

@@ -29,6 +29,9 @@ class Medecin
     #[Groups(["exclude_circular_reference"])]
     private Collection $rdvs;
 
+    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: Indisponibilite::class, orphanRemoval: true)]
+    private Collection $indisponibilites;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[MaxDepth(1)]

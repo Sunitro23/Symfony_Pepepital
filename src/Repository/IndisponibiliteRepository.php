@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Indisponibilite;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,14 @@ class IndisponibiliteRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function isDispo(DateTime $date): bool
+    {
+        return $this->createQueryBuilder('i')
+            ->where(':date BETWEEN i.debut AND i.fin')
+            ->setParameter('date', $date)
+            ->getQuery()->getOneOrNullResult()==null;
     }
 
 //    /**

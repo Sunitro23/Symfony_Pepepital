@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\RDV;
 use App\Form\RdvType;
+use App\Repository\IndisponibiliteRepository;
 use App\Repository\RDVRepository;
 use App\Repository\StatutRepository;
 use App\Repository\UserRepository;
@@ -16,22 +17,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class PatientController extends AbstractController
 {
     #[Route('/patient/prendre-rdv', name: 'prendre_rdv')]
-    public function index(Request $request, UserRepository $userRepository, StatutRepository $statutRepository, EntityManagerInterface $em): Response
+    public function index(Request $request, UserRepository $userRepository, StatutRepository $statutRepository, EntityManagerInterface $em, IndisponibiliteRepository $indisponibiliteRepository): Response
     {
         $rdv = new RDV();
         $form = $this->createForm(RdvType::class, $rdv);
         $form->handleRequest($request);
+        $error = null;
         if($form->isSubmitted() && $form->isValid()){
             $rdv->setPatient($userRepository->getCorresp($this->getUser()));
             $rdv->setStatut($statutRepository->find(2));
             $rdv->setDuree(30);
+            if($indisponibiliteRepository->isDispo($rdv->getDate())){
             $em->persist($rdv);
             $em->flush();
             return $this->redirectToRoute('mes_rdv');
+            } else {
+                $error = 'Le médecin est indisponible sur cette date';
+            }
         }
         return $this->render('patient/index.html.twig', [
             'controller_name' => 'PatientController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'error' => $error
         ]);
     }
 

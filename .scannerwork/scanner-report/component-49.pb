@@ -1,0 +1,1 @@
+1 2cssXûhr2public/fontawesome-free-6.3.0-web/scss/_shims.scss

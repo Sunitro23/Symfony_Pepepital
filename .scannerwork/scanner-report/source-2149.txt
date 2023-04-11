@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pepepital - Modifier rendez-vous{% endblock %}
+
+{% block body %}
+
+<div class="container rounded bg-white">
+    {{form_start(form)}}
+        {{form_row(form.date)}}
+        {{form_row(form.duree, {
+            'label': 'Durée (en minutes)'
+        })}}
+        <button type="submit" class="btn btn-primary">Proposer le nouveau rendez-vous</button>
+    {{form_end(form)}}
+</div>
+
+{% endblock %}

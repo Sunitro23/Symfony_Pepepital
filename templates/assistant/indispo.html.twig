@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pepepital - Indisponibilités{% endblock %}
+
+{% block body %}
+
+<div class="container rounded bg-white">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Période</th>
+                <th scope="col">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for indispo in indispos %}
+                <tr>
+                    <td>Du {{indispo.debut|date('d/m/y')}} au {{indispo.fin|date('d/m/Y')}}</td>
+                    <td>{{indispo.libelle}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

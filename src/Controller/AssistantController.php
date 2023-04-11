@@ -52,4 +52,13 @@ class AssistantController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/assistant/indisponibilites', name: 'indispos_assistant')]
+    public function indisposAssistant(UserRepository $userRepository): Response
+    {
+        $indispos = $userRepository->getCorresp($this->getUser())->getMedecin()->getIndisponibilites();
+        return $this->render('assistant/indispo.html.twig', [
+            'indispos' => $indispos
+        ]);
+    }
 }

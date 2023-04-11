@@ -1,0 +1,1 @@
+& 2cssX:hr6public/fontawesome-free-6.3.0-web/scss/_functions.scss

@@ -1,0 +1,1 @@
+, 2cssXhr4public/fontawesome-free-6.3.0-web/scss/v4-shims.scss

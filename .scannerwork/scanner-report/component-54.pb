@@ -1,0 +1,1 @@
+6 2cssX!hr4public/fontawesome-free-6.3.0-web/scss/_stacked.scss

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pepepital - Indisponibilités{% endblock %}
+
+{% block body %}
+
+<div class="container rounded bg-white">
+<a href="{{path('new_indispo')}}"><button class="btn btn-primary m-1"><i class="fa fa-plus"></i> Ajouter une indisponibilité</button></a>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Période</th>
+                <th scope="col">Note</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for indispo in indispos %}
+                <tr>
+                    <td>Du {{indispo.debut|date('d/m/y')}} au {{indispo.fin|date('d/m/Y')}}</td>
+                    <td>{{indispo.libelle}}</td>
+                    <td><a href="/medecin/indisponibilite/{{indispo.id}}"><button class="btn btn-primary m-1"><i class="fa fa-pencil"></i> Modifier l'indisponibilité</button></a><a href="/medecin/delete-indispo/{{indispo.id}}"><button class="btn btn-danger m-1"><i class="fa fa-trash"></i></button></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

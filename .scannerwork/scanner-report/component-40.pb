@@ -1,0 +1,1 @@
+( 2cssXšhr5public/fontawesome-free-6.3.0-web/scss/_animated.scss

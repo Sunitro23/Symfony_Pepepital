@@ -5,6 +5,9 @@
 {% block body %}
 
 <div class="container rounded bg-white">
+    {% if error is not null %}
+        <div class="bg-danger rounded">{{error}}</div>
+    {% endif %}
     {{form_start(form)}}
         <div class="form-group">
             <label>Date :</label>{{form_widget(form.date)}}

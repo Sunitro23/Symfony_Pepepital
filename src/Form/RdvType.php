@@ -15,7 +15,10 @@ class RdvType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date', DateTimeType::class)
+            ->add('date', DateTimeType::class, [
+                'years' => range(date('Y'), date('Y')+1),
+                'hours' => range('8', '18')
+            ])
             ->add('medecin', EntityType::class, [
                 'class' => Medecin::class,
                 'choice_label' => 'user.login'

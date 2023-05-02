@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RDV;
 use App\Form\RdvType;
 use App\Repository\IndisponibiliteRepository;
+use App\Repository\MedecinRepository;
 use App\Repository\RDVRepository;
 use App\Repository\StatutRepository;
 use App\Repository\UserRepository;
@@ -38,7 +39,8 @@ class PatientController extends AbstractController
         return $this->render('patient/index.html.twig', [
             'controller_name' => 'PatientController',
             'form' => $form->createView(),
-            'error' => $error
+            'error' => $error,
+            'indispos' => $indisponibiliteRepository->findAll()
         ]);
     }
 

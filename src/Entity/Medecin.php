@@ -38,9 +38,6 @@ class Medecin
     #[Groups(["exclude_circular_reference"])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: Indisponibilite::class, orphanRemoval: true)]
-    private Collection $indisponibilites;
-
     public function __construct()
     {
         $this->rdvs = new ArrayCollection();
@@ -118,7 +115,6 @@ class Medecin
     {
         if (!$this->indisponibilites->contains($indisponibilite)) {
             $this->indisponibilites->add($indisponibilite);
-            $indisponibilite->setMedecin($this);
         }
 
         return $this;

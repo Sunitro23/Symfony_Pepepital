@@ -18,7 +18,8 @@ class Assistant
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'assistant', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
+    #[MaxDepth(1)]
+    #[Groups(["exclude_circular_reference"])]
     private ?Medecin $medecin = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

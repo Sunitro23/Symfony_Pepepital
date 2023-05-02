@@ -25,7 +25,8 @@ class Indisponibilite
     #[ORM\Column(length: 50)]
     private ?string $libelle = null;
 
-    #[ORM\ManyToOne(inversedBy: 'indisponibilites')]
+    
+    #[ORM\ManyToOne(inversedBy: 'rdvs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Medecin $medecin = null;
 
